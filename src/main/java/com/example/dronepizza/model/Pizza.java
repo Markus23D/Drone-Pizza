@@ -22,18 +22,13 @@ public class Pizza {
         this.titel = titel;
         this.pris = pris;
     }
-    // Getters and setters
-    public Long getPizzaId() {
-        return pizzaId;
-    }
+
 
     public void setPizzaId(Long pizzaId) {
         this.pizzaId = pizzaId;
     }
 
-    public String getTitel() {
-        return titel;
-    }
+
 
     public void setTitel(String titel) {
         this.titel = titel;

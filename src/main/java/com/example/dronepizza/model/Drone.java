@@ -1,29 +1,25 @@
 package com.example.dronepizza.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
-
 @Entity
 public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long droneId;
-    private String serialUuid = UUID.randomUUID().toString();
-
+    private String serialUuid;
     @Enumerated(EnumType.STRING)
     private Dronestatus driftsstatus;
 
     @ManyToOne
     private Station station;
 
-    // Tom konstruktør
-    public Drone() {
-    }
-
-    // Konstruktør med felter
     public Drone(Dronestatus driftsstatus, Station station) {
         this.driftsstatus = driftsstatus;
         this.station = station;
+    }
+
+    // Default constructor
+    public Drone() {
     }
 
     // Getters and setters

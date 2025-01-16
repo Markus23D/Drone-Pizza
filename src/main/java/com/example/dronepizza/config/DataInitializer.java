@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -37,15 +38,18 @@ public class DataInitializer implements CommandLineRunner {
 
         // Opret jeg 3 stationer
         stationRepository.saveAll(List.of(
-                new Station(45.41, 9.34), // Centrum
-                new Station(55.42, 12.35), // Tæt på centrum
-                new Station(65.40, 20.33)  // Tæt på centrum
+                new Station(45.41, 9.34),
+                new Station(55.42, 12.35),
+                new Station(65.40, 20.33)
         ));
 
         // Opretter jeg 3 droner
         Drone drone1 = new Drone(Dronestatus.I_DRIFT, stationRepository.findAll().get(0));
+        drone1.setSerialUuid(UUID.randomUUID().toString());
         Drone drone2 = new Drone(Dronestatus.I_DRIFT, stationRepository.findAll().get(1));
+        drone2.setSerialUuid(UUID.randomUUID().toString());
         Drone drone3 = new Drone(Dronestatus.I_DRIFT, stationRepository.findAll().get(2));
+        drone3.setSerialUuid(UUID.randomUUID().toString());
         droneRepository.saveAll(List.of(drone1, drone2, drone3));
     }
 }

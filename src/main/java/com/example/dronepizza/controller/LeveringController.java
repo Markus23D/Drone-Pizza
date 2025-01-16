@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,8 @@ public class LeveringController {
 
     @GetMapping()
     public ResponseEntity<?> getAllDeliveries() {
-        return ResponseEntity.ok(leveringRepository.findByFaktiskLeveringIsNull());
+        List<Levering> leveringer = leveringRepository.findByFaktiskLeveringIsNull();
+        return ResponseEntity.ok(leveringer);
     }
 
     @PostMapping("/add")
@@ -78,8 +80,12 @@ public class LeveringController {
             if (droner.isEmpty()) {
                 return ResponseEntity.badRequest().body("Ingen droner tilgængelige.");
             }
-            drone = droner.get(0);
+            drone = droner.stream()
+                    .filter(d -> d.getDriftsstatus() == Dronestatus.I_DRIFT)
+                    .min(Comparator.comparingInt(d -> leveringRepository.countByDrone(d)))
+                    .orElse(droner.get(0));
         }
+
         if (drone.getDriftsstatus() != Dronestatus.I_DRIFT) {
             return ResponseEntity.badRequest().body("Dronen er ikke i drift.");
         }

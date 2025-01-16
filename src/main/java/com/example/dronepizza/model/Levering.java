@@ -19,10 +19,7 @@ public class Levering {
     @ManyToOne
     private Drone drone;
 
-    // Getters and setters
-    public Long getLeveringId() {
-        return leveringId;
-    }
+
 
     public void setLeveringId(Long leveringId) {
         this.leveringId = leveringId;
@@ -36,9 +33,6 @@ public class Levering {
         this.adresse = adresse;
     }
 
-    public LocalDateTime getForventetLevering() {
-        return forventetLevering;
-    }
 
     public void setForventetLevering(LocalDateTime forventetLevering) {
         this.forventetLevering = forventetLevering;
@@ -52,9 +46,6 @@ public class Levering {
         this.faktiskLevering = faktiskLevering;
     }
 
-    public Pizza getPizza() {
-        return pizza;
-    }
 
     public void setPizza(Pizza pizza) {
         this.pizza = pizza;
@@ -67,4 +58,13 @@ public class Levering {
     public void setDrone(Drone drone) {
         this.drone = drone;
     }
+
+    public Pizza getPizza() {
+        return pizza;
+    }
+
+    public Long getLeveringId() {
+        return leveringId;
+    }
+
 }

@@ -37,7 +37,6 @@ public class DroneController {
         if (station.isEmpty()) {
             return ResponseEntity.badRequest().body("Ingen stationer fundet.");
         }
-
         Drone drone = new Drone();
         drone.setSerialUuid(UUID.randomUUID().toString());
         drone.setDriftsstatus(Dronestatus.I_DRIFT);

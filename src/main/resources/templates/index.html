@@ -60,13 +60,12 @@
 <script>
     const apiBase = 'http://localhost:8080';
 
-
     async function fetchDeliveries() {
-        const response = await fetch('/deliveries'); // Henter fra API
+        const response = await fetch('/deliveries');
         const deliveries = await response.json();
 
         const tableBody = document.getElementById('levering-table-body');
-        tableBody.innerHTML = ''; // Tømmer tabellen
+        tableBody.innerHTML = '';
 
         deliveries.forEach(delivery => {
             const forventetLevering = delivery.forventetLevering
@@ -95,14 +94,10 @@
         });
     }
 
-    // Tilføj en ny drone
     async function addDrone() {
         const response = await fetch(`${apiBase}/drones/add`, { method: 'POST' });
         if (response.ok) {
-            alert('Drone oprettet!');
             fetchDeliveries();
-        } else {
-            alert('Kunne ikke oprette drone.');
         }
     }
 
@@ -116,13 +111,10 @@
         ];
     }
 
-
-
     //lav en levering
     async function simulateDelivery() {
         const pizzas = await fetchPizzas();
         if (pizzas.length === 0) {
-            alert('Ingen pizzaer tilgængelige!');
             return;
         }
 
@@ -148,67 +140,59 @@
     `;
         document.body.appendChild(modal);
     }
-//tilføj levering
+
+
     async function submitDelivery() {
         const pizzaId = document.getElementById('pizzaSelect').value;
         const adresse = document.getElementById('adresseInput').value;
 
         if (!pizzaId || !adresse) {
-            alert('Pizza og adresse skal udfyldes!');
             return;
         }
-
         const response = await fetch(`${apiBase}/deliveries/add?pizzaId=${pizzaId}&adresse=${adresse}`, {
             method: 'POST'
         });
-
         if (response.ok) {
-            alert('Levering oprettet!');
             fetchDeliveries();
             // Fjern modal-dialogen efter en succesfuld submission
             const modal = document.querySelector('div[style*="position: fixed"]');
             if (modal) modal.remove();
-        } else {
-            alert('Kunne ikke oprette levering.');
         }
     }
+
     function closeModal(button) {
         const modal = button.closest('div[style*="position: fixed"]');
         if (modal) {
             modal.remove();
-        } else {
-            console.error('Kunne ikke finde modal-dialogen.');
-        }
-    }
-    //tilføj en drone til en levering
-    async function scheduleDrone(leveringId) {
-        const response = await fetch(`${apiBase}/deliveries/schedule?leveringId=${leveringId}`, {
-            method: 'POST'
-        });
-        if (response.ok) {
-            alert('Drone tilknyttet levering!');
-            fetchDeliveries();
-        } else {
-            alert('Kunne ikke tilknytte drone.');
         }
     }
 
-    // Afslut en levering
+    async function scheduleDrone(leveringId) {
+        if (!leveringId || leveringId === "undefined") {
+            return;
+        }
+        try {
+            const response = await fetch(`${apiBase}/deliveries/schedule?leveringId=${leveringId}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                fetchDeliveries();
+            }
+        } catch (error) {
+
+        }
+    }
     async function finishDelivery(leveringId) {
         const response = await fetch(`${apiBase}/deliveries/finish?leveringId=${leveringId}`, {
             method: 'POST'
         });
         if (response.ok) {
-            alert('Levering afsluttet!');
             fetchDeliveries();
-        } else {
-            const error = await response.text();
-            alert(`Kunne ikke afslutte levering: ${error}`);
         }
     }
 
-    // Opdater listen hvert 60. sekund
-    setInterval(fetchDeliveries, 60000);+
+    setInterval(fetchDeliveries, 60000);
 
     fetchDeliveries();
 </script>

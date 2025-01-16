@@ -25,11 +25,11 @@ public class Station {
     public void setStationId(Long stationId) {
         this.stationId = stationId;
     }
-//bruger ikke siden jeg har hardcodet det ind
-// Getters and setters
-public Long getStationId() {
-    return stationId;
-}
+
+
+    public Long getStationId() {
+        return stationId;
+    }
 
     public double getLatitude() {
         return latitude;
