@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -44,7 +44,6 @@ class DroneControllerTest {
 
     @Test
     void testAddDrone() {
-        // Arrange
         Station station = new Station();
         station.setStationId(1L);
 
@@ -52,10 +51,8 @@ class DroneControllerTest {
         when(droneRepository.countByStation(station)).thenReturn(0L);
         when(droneRepository.save(Mockito.any(Drone.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         ResponseEntity<?> response = droneController.addDrone();
 
-        // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody() instanceof Drone);
         Drone drone = (Drone) response.getBody();
@@ -68,7 +65,6 @@ class DroneControllerTest {
 
     @Test
     void testEnableDrone() {
-        // Arrange
         Drone drone = new Drone();
         drone.setDroneId(1L);
         drone.setDriftsstatus(Dronestatus.UDE_AF_DRIFT);
@@ -78,7 +74,6 @@ class DroneControllerTest {
 
         ResponseEntity<?> response = droneController.enableDrone(1L);
 
-        // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody() instanceof Drone);
         assertEquals(Dronestatus.I_DRIFT, ((Drone) response.getBody()).getDriftsstatus());
@@ -88,7 +83,6 @@ class DroneControllerTest {
 
     @Test
     void testDisableDrone() {
-        // Arrange
         Drone drone = new Drone();
         drone.setDroneId(1L);
         drone.setDriftsstatus(Dronestatus.I_DRIFT);
@@ -96,10 +90,8 @@ class DroneControllerTest {
         when(droneRepository.findById(1L)).thenReturn(Optional.of(drone));
         when(droneRepository.save(any(Drone.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         ResponseEntity<?> response = droneController.disableDrone(1L);
 
-        // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody() instanceof Drone);
         assertEquals(Dronestatus.UDE_AF_DRIFT, ((Drone) response.getBody()).getDriftsstatus());
@@ -109,7 +101,6 @@ class DroneControllerTest {
 
     @Test
     void testRetireDrone() {
-        // Arrange
         Drone drone = new Drone();
         drone.setDroneId(1L);
         drone.setDriftsstatus(Dronestatus.I_DRIFT);
@@ -117,10 +108,8 @@ class DroneControllerTest {
         when(droneRepository.findById(1L)).thenReturn(Optional.of(drone));
         when(droneRepository.save(any(Drone.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         ResponseEntity<?> response = droneController.retireDrone(1L);
 
-        // Assert
         assertEquals(200, response.getStatusCodeValue());
         assertTrue(response.getBody() instanceof Drone);
         assertEquals(Dronestatus.UDFASET, ((Drone) response.getBody()).getDriftsstatus());
@@ -130,13 +119,10 @@ class DroneControllerTest {
 
     @Test
     void testChangeDroneStatusNotFound() {
-        // Arrange
         when(droneRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
         ResponseEntity<?> response = droneController.enableDrone(1L);
 
-        // Assert
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Drone ikke fundet.", response.getBody());
         verify(droneRepository, times(1)).findById(1L);
